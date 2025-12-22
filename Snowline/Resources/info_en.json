@@ -1,0 +1,21 @@
+{
+    "title": "Khione",
+    "subtitle": "A modern AI experience for clarity and focus",
+    "sections": [
+        {
+            "title": "What is Khione?",
+            "text":
+                "Khione is a high-quality AI assistant designed for clarity, creativity, and productivity — built to support you in everyday tasks and idea development."
+        },
+        {
+            "title": "Intelligent & efficient",
+            "text":
+                "Khione combines fast responses with a clean, modern interface for a smooth and enjoyable user experience."
+        },
+        {
+            "title": "Privacy first",
+            "text":
+                "Your inputs are handled responsibly. Privacy and transparency are core principles of Khione."
+        }
+    ]
+}
