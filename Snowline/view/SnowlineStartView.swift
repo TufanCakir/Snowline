@@ -12,33 +12,38 @@ struct SnowlineStartView: View {
     let engine: StartPage
     @Binding var searchText: String
     var onSubmit: () -> Void
-    @FocusState.Binding var searchFocused: Bool  // 👈 NEU
+    @FocusState.Binding var searchFocused: Bool
     @Binding var selectedIntent: SearchIntent
 
     var body: some View {
-        VStack {
-            Spacer()
+        VStack(spacing: 0) {
 
-            HStack(spacing: 16) {
+            Spacer(minLength: 60)
+
+            // ❄️ Logo + Title (grouped, calm)
+            VStack(spacing: 12) {
                 Image("snowline_icon")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 60, height: 60)
+                    .frame(width: 64, height: 64)
                     .clipShape(Circle())
 
                 Text("Snowline")
-                    .font(.title3.weight(.medium))
+                    .font(.title2.weight(.semibold))
             }
 
+            // ❄️ Search Bar (primary focus)
             SnowlineSearchBar(
                 text: $searchText,
                 onSubmit: onSubmit,
-                isFocused: $searchFocused  // 👈 DURCHREICHEN
+                isFocused: $searchFocused
             )
             .padding(.horizontal, 32)
-            
+            .padding(.top, 28)
+
+            // ❄️ Intent Chips
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+                HStack(spacing: 10) {
                     ForEach(SearchIntent.allCases) { intent in
                         SearchIntentChip(
                             intent: intent,
@@ -50,15 +55,20 @@ struct SnowlineStartView: View {
                 }
                 .padding(.horizontal, 32)
             }
-            .padding(.top, 12)
+            .padding(.top, 14)
 
-
-            Text("Search using your preferred engine")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .padding(.top, 12)
+            // ❄️ Subtitle
+            Text(
+                "Snowline ist eine minimalistische Such-App, die dir einen klaren, fokussierten Start ins Web ermöglicht."
+            )
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+            .multilineTextAlignment(.center)
+            .padding(.top, 18)
+            .padding(.horizontal, 32)
 
             Spacer()
         }
+        .frame(maxWidth: .infinity)
     }
 }

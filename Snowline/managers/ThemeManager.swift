@@ -130,7 +130,7 @@ extension ThemeManager {
 
     func startPageRowBackground(isSelected: Bool) -> Color {
         isSelected
-        ? accentColor.opacity(0.12)
-        : .clear
+            ? accentColor.opacity(0.12)
+            : .clear
     }
 }

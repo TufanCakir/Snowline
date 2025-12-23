@@ -1,21 +1,21 @@
 {
-    "title": "Khione",
-    "subtitle": "Ein modernes KI-Erlebnis für Klarheit und Fokus",
+    "title": "Snowline",
+    "subtitle": "Ein ruhiger Einstieg in deine Websuche",
     "sections": [
         {
-            "title": "Was ist Khione?",
+            "title": "Willkommen bei Snowline",
             "text":
-                "Khione ist ein hochwertiger KI-Assistent für Klarheit, Kreativität und Produktivität – entwickelt, um dich im Alltag und bei Ideen effektiv zu unterstützen."
+                "Snowline ist eine minimalistische Such-App, die dir einen klaren, fokussierten Start ins Web ermöglicht."
         },
         {
-            "title": "Intelligent & effizient",
+            "title": "Suche ohne Ablenkung",
             "text":
-                "Khione kombiniert schnelle Reaktionen mit einer klaren, modernen Benutzeroberfläche für ein flüssiges und angenehmes Nutzungserlebnis."
+                "Konzentriere dich auf das Wesentliche. Snowline reduziert visuelle Unruhe und bringt dich schnell zu relevanten Ergebnissen."
         },
         {
-            "title": "Privatsphäre zuerst",
+            "title": "Datenschutz & Performance",
             "text":
-                "Deine Eingaben werden verantwortungsvoll behandelt. Datenschutz und Transparenz stehen bei Khione an erster Stelle."
+                "Snowline ist leichtgewichtig, performant und respektiert deine Privatsphäre – für eine angenehme und verlässliche Suche."
         }
     ]
 }

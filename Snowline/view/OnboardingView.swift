@@ -1,10 +1,3 @@
-//
-//  OnboardingView.swift
-//  Khione
-//
-//  Created by Tufan Cakir on 18.12.25.
-//
-
 import SwiftUI
 
 struct OnboardingView: View {
@@ -12,50 +5,76 @@ struct OnboardingView: View {
     var onFinish: () -> Void
     @State private var page = 0
 
+    private let lastPage = 2
+
     var body: some View {
         VStack(spacing: 32) {
 
             TabView(selection: $page) {
 
+                // ❄️ Seite 1 – eigenes Snowline Icon
                 OnboardingPage(
-                    icon: "snowflake",
-                    title: "Khione",
+                    icon: {
+                        Image("snowline_icon")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 64, height: 64)
+                            .clipShape(Circle())
+                    },
+                    title: "Ein klarer Start ins Web",
                     text:
-                        "Your native AI assistant for clarity, creativity and productivity.",
+                        "Snowline bietet dir eine minimalistische Suchoberfläche ohne Ablenkungen. "
+                        + "Konzentriere dich auf das Wesentliche und starte direkt ins Web."
                 )
                 .tag(0)
 
+                // 🔒 Seite 2 – Private Mode
                 OnboardingPage(
-                    icon: "sparkles",
-                    title: "Powerful & Private",
+                    icon: {
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 44, weight: .semibold))
+                            .foregroundStyle(.primary)
+                    },
+                    title: "Privat surfen, wenn du möchtest",
                     text:
-                        "Chat, Vision and Apple Intelligence — designed for speed and privacy.",
+                        "Wechsle jederzeit in den privaten Modus. "
+                        + "Besuchte Seiten und Suchanfragen werden dort nicht gespeichert."
                 )
                 .tag(1)
 
+                // ✨ Seite 3 – Personalisierung
                 OnboardingPage(
-                    icon: "checkmark.seal",
-                    title: "Ready to Start",
+                    icon: {
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 44, weight: .semibold))
+                            .foregroundStyle(.primary)
+                    },
+                    title: "Schnell. Einfach. Fokussiert.",
                     text:
-                        "Start for free. Upgrade anytime to unlock advanced features.",
+                        "Snowline ist auf eine einzige Suchmaschine fokussiert, "
+                        + "damit du ohne Umwege direkt ins Web starten kannst."
                 )
                 .tag(2)
             }
-            .tabViewStyle(.page)
+            .tabViewStyle(.page(indexDisplayMode: .always))
+            .animation(.easeInOut(duration: 0.25), value: page)
 
+            // Action Button
             Button {
-                if page < 2 {
-                    withAnimation { page += 1 }
+                if page < lastPage {
+                    page += 1
                 } else {
                     onFinish()
                 }
             } label: {
-                Text(page < 2 ? "Continue" : "Start using Khione")
+                Text(page < lastPage ? "Continue" : "Start using Snowline")
+                    .font(.body.weight(.semibold))
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
-            .padding(.horizontal)
+            .controlSize(.large)
+            .padding(.horizontal, 24)
         }
-        .padding(.bottom)
+        .padding(.bottom, 24)
     }
 }

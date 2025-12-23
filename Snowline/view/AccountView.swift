@@ -17,10 +17,6 @@ struct AccountView: View {
     private var language =
         Locale.current.language.languageCode?.identifier ?? "en"
 
-    // MARK: - Links
-    private let tosURL = URL(string: "https://khione-tos.netlify.app/")!
-    private let privacyURL = URL(string: "https://khione-privacy.netlify.app/")!
-
     // MARK: - Localization
     private var text: AccountLocalization {
         Bundle.main.loadAccountLocalization(language: language)
@@ -112,22 +108,19 @@ extension AccountView {
     fileprivate var aboutSection: some View {
         Section(text.aboutSection) {
             NavigationLink {
-                KhioneInfoView()
+                SnowlineInfoView()
             } label: {
-                Label("Khione", systemImage: "snowflake")
-            }
+                HStack(spacing: 10) {
+                    SnowballShape()
+                        .stroke(Color.accentColor, lineWidth: 2)
+                        .frame(width: 18, height: 18)
 
+                    Text("Snowline")
+                }
+            }
             Label(Bundle.main.appVersionString, systemImage: "number")
                 .foregroundColor(.secondary)
             Label(text.builtWith, systemImage: "applelogo")
-
-            Link(destination: tosURL) {
-                Label(text.tos, systemImage: "doc.text")
-            }
-
-            Link(destination: privacyURL) {
-                Label(text.privacy, systemImage: "hand.raised")
-            }
         }
     }
 }

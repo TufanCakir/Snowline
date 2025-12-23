@@ -8,27 +8,41 @@ import SwiftUI
 struct RootView: View {
 
     @EnvironmentObject private var internet: InternetMonitor
+    @State private var selectedTab: Tab = .browser
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                content
-            }
-            .animation(
-                .easeInOut(duration: 0.25),
-                value: internet.isConnected
-            )
-        }
-    }
+        Group {
+            if internet.isConnected {
+                TabView(selection: $selectedTab) {
 
-    @ViewBuilder
-    private var content: some View {
-        if internet.isConnected {
-            SnowlineView()
-                .transition(.opacity)
-        } else {
-            NoInternetView()
-                .transition(.opacity)
+                    // 🌐 Browser
+                    NavigationStack {
+                        SnowlineView()
+                    }
+                    .tabItem {
+                        Label("Browse", systemImage: "globe")
+                    }
+                    .tag(Tab.browser)
+
+                    // 👤 Account
+                    NavigationStack {
+                        AccountView()
+                    }
+                    .tabItem {
+                        Label("Account", systemImage: "person.crop.circle")
+                    }
+                    .tag(Tab.account)
+                }
+            } else {
+                NoInternetView()
+            }
         }
+        .animation(.easeInOut(duration: 0.25), value: internet.isConnected)
     }
+}
+
+// MARK: - Tabs
+private enum Tab {
+    case browser
+    case account
 }

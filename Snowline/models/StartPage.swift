@@ -21,8 +21,6 @@ enum StartPage: String, CaseIterable, Identifiable {
         }
     }
 
-  
-
     // MARK: - Home URL
     var url: URL {
         switch self {
@@ -34,14 +32,14 @@ enum StartPage: String, CaseIterable, Identifiable {
     // MARK: - Search URL
     func searchURL(for query: String) -> URL {
         let encoded =
-        query
+            query
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        ?? ""
-        
+            ?? ""
+
         switch self {
         case .google:
             return URL(string: "https://www.google.com/search?q=\(encoded)")!
-}
+        }
     }
 }

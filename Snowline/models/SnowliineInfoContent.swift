@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct KhioneInfoContent: Decodable {
+struct SnowliineInfoContent: Decodable {
     let title: String
     let subtitle: String
-    let sections: [KhioneInfoSection]
+    let sections: [SnowlineInfoSection]
 }
 
-struct KhioneInfoSection: Decodable, Identifiable {
+struct SnowlineInfoSection: Decodable, Identifiable {
     let id: UUID
     let title: String
     let text: String
@@ -32,14 +32,14 @@ struct KhioneInfoSection: Decodable, Identifiable {
 }
 
 extension Bundle {
-    func loadKhioneInfo(language: String) -> KhioneInfoContent {
+    func loadKhioneInfo(language: String) -> SnowliineInfoContent {
         let files = ["info_\(language)", "info_en"]
 
         for file in files {
             if let url = url(forResource: file, withExtension: "json"),
                 let data = try? Data(contentsOf: url),
                 let decoded = try? JSONDecoder().decode(
-                    KhioneInfoContent.self,
+                    SnowliineInfoContent.self,
                     from: data
                 )
             {

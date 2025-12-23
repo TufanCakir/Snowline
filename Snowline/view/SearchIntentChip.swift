@@ -42,20 +42,19 @@ struct SearchIntentChip: View {
 
     private var foreground: Color {
         isSelected
-        ? themeManager.accentColor
-        : .secondary
+            ? themeManager.accentColor
+            : .secondary
     }
 
     private var background: Color {
         isSelected
-        ? themeManager.accentColor.opacity(0.15)
-        : Color.secondary.opacity(0.08)
+            ? themeManager.accentColor.opacity(0.15)
+            : Color.secondary.opacity(0.08)
     }
 
     private var border: Color {
         isSelected
-        ? themeManager.accentColor
-        : Color.secondary.opacity(0.3)
+            ? themeManager.accentColor
+            : Color.secondary.opacity(0.3)
     }
 }
-

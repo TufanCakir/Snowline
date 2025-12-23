@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct KhioneInfoView: View {
+struct SnowlineInfoView: View {
 
     @AppStorage("khione_language")
     private var language =
         Locale.current.language.languageCode?.identifier ?? "en"
 
-    private var content: KhioneInfoContent {
+    private var content: SnowliineInfoContent {
         Bundle.main.loadKhioneInfo(language: language)
     }
 
@@ -38,8 +38,11 @@ struct KhioneInfoView: View {
 
     private var header: some View {
         VStack(spacing: 12) {
-            Image(systemName: "snowflake")
-                .font(.system(size: 44))
+            Image("snowline_icon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 64, height: 64)
+                .clipShape(Circle())
 
             Text(content.title)
                 .font(.largeTitle.bold())

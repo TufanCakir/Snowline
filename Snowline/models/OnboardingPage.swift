@@ -1,32 +1,53 @@
-//
-//  OnboardingPage.swift
-//  Khione
-//
-//  Created by Tufan Cakir on 18.12.25.
-//
-
 import SwiftUI
 
-struct OnboardingPage: View {
-
-    let icon: String
+struct OnboardingPage<Icon: View>: View {
+    let icon: Icon
     let title: String
     let text: String
+
+    init(
+        @ViewBuilder icon: () -> Icon,
+        title: String,
+        text: String
+    ) {
+        self.icon = icon()
+        self.title = title
+        self.text = text
+    }
 
     var body: some View {
         VStack(spacing: 28) {
             Spacer(minLength: 40)
 
-            iconView
+            icon
+                .frame(width: 96, height: 96)
+                .background(
+                    Circle()
+                        .fill(.ultraThinMaterial)
+                )
+                .overlay(
+                    Circle()
+                        .stroke(
+                            LinearGradient(
+                                colors: [
+                                    Color.primary.opacity(0.18),
+                                    Color.clear,
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            ),
+                            lineWidth: 1
+                        )
+                )
 
             VStack(spacing: 12) {
                 Text(title)
-                    .font(.largeTitle.bold())
+                    .font(.title2.weight(.semibold))
                     .multilineTextAlignment(.center)
 
                 Text(text)
                     .font(.callout)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
             }
@@ -34,33 +55,5 @@ struct OnboardingPage: View {
             Spacer()
         }
         .padding(.horizontal)
-    }
-}
-
-extension OnboardingPage {
-
-    fileprivate var iconView: some View {
-        Image(systemName: icon)
-            .font(.system(size: 60, weight: .semibold))
-            .foregroundStyle(.primary)
-            .padding(24)
-            .background(
-                Circle()
-                    .fill(.ultraThinMaterial)
-            )
-            .overlay(
-                Circle()
-                    .stroke(
-                        LinearGradient(
-                            colors: [
-                                Color.primary.opacity(0.15),
-                                Color.clear,
-                            ],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        ),
-                        lineWidth: 1
-                    )
-            )
     }
 }

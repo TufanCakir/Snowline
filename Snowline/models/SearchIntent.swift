@@ -60,4 +60,3 @@ enum SearchIntent: String, CaseIterable, Identifiable {
         }
     }
 }
-
