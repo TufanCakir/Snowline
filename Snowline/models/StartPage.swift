@@ -11,35 +11,23 @@ enum StartPage: String, CaseIterable, Identifiable {
 
     case google
 
-    // MARK: - Identifiable
     var id: String { rawValue }
 
-    // MARK: - Display Title
     var title: String {
-        switch self {
-        case .google: return "Google"
-        }
+        "Google"
     }
 
-    // MARK: - Home URL
-    var url: URL {
-        switch self {
-        case .google:
-            return URL(string: "https://www.google.com")!
-        }
+    /// Home page
+    var homeURL: URL {
+        URL(string: "https://www.google.com")!
     }
 
-    // MARK: - Search URL
+    /// Search
     func searchURL(for query: String) -> URL {
-        let encoded =
-            query
+        let encoded = query
             .trimmingCharacters(in: .whitespacesAndNewlines)
-            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-            ?? ""
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
 
-        switch self {
-        case .google:
-            return URL(string: "https://www.google.com/search?q=\(encoded)")!
-        }
+        return URL(string: "https://www.google.com/search?q=\(encoded)")!
     }
 }

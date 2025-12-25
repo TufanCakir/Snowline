@@ -29,9 +29,22 @@
 		2BB9DCFC2EF8BE3C00726B23 /* SnowlineUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnowlineUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2B8819442EFD23E600137C13 /* Exceptions for "Snowline" folder in "Snowline" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				models/Untitled.swift,
+			);
+			target = 2BB9DCE42EF8BE3B00726B23 /* Snowline */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2BB9DCE72EF8BE3B00726B23 /* Snowline */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				2B8819442EFD23E600137C13 /* Exceptions for "Snowline" folder in "Snowline" target */,
+			);
 			path = Snowline;
 			sourceTree = "<group>";
 		};

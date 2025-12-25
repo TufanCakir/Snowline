@@ -17,6 +17,15 @@ final class ThemeManager: ObservableObject {
     @AppStorage("selectedThemeID")
     private var selectedThemeID: String = "system"
 
+    private var resolvedScheme: ColorScheme {
+        if let scheme = colorScheme {
+            return scheme
+        }
+
+        let style = UITraitCollection.current.userInterfaceStyle
+        return style == .dark ? .dark : .light
+    }
+
     // MARK: - Init
     init() {
         let loadedThemes = Bundle.main.loadThemes()
@@ -61,17 +70,15 @@ final class ThemeManager: ObservableObject {
 
     // MARK: - Accent Color
     var accentColor: Color {
-        let hex = selectedTheme.accentColor
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let hex = selectedTheme.accentColor.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
 
-        guard
-            !hex.isEmpty,
-            selectedTheme.id != "system"
-        else {
-            return .accentColor
+        if !hex.isEmpty, selectedTheme.id != "system" {
+            return Color(hex: hex)
         }
 
-        return Color(hex: hex)
+        return resolvedScheme == .dark ? Color.white : Color.accentColor
     }
 
     // MARK: - Public API
@@ -97,21 +104,21 @@ extension ThemeManager {
 
     /// Hauptfarbe für Toolbar-Icons
     var toolbarIconColor: Color {
-        // Wenn Theme eine AccentColor hat → nutze sie
-        let hex = selectedTheme.accentColor
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let hex = selectedTheme.accentColor.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
 
         if !hex.isEmpty, selectedTheme.id != "system" {
             return Color(hex: hex)
         }
 
-        // Fallback je nach Scheme
-        return colorScheme == .dark ? .white : .black
+        return resolvedScheme == .dark ? .white : .black
     }
 
-    /// Sekundäre Icons (z. B. deaktiviert)
     var toolbarSecondaryIconColor: Color {
-        toolbarIconColor.opacity(0.6)
+        resolvedScheme == .dark
+            ? Color.white.opacity(0.55)
+            : Color.black.opacity(0.55)
     }
 }
 
@@ -122,15 +129,15 @@ extension ThemeManager {
             return accentColor
         }
 
-        // Sekundärfarbe je nach Scheme
-        return colorScheme == .dark
-            ? Color.white.opacity(0.6)
-            : Color.black.opacity(0.6)
+        return resolvedScheme == .dark
+            ? Color.white.opacity(0.65)
+            : Color.black.opacity(0.65)
     }
 
     func startPageRowBackground(isSelected: Bool) -> Color {
-        isSelected
-            ? accentColor.opacity(0.12)
-            : .clear
+        if isSelected {
+            return accentColor.opacity(resolvedScheme == .dark ? 0.18 : 0.12)
+        }
+        return .clear
     }
 }

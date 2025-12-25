@@ -26,6 +26,8 @@ struct SnowlineSearchBar: View {
                 .disableAutocorrection(true)
                 .submitLabel(.search)
                 .onSubmit(onSubmit)
+                .frame(height: 50)
+                .frame(maxWidth: .infinity)
 
             if !text.isEmpty {
                 Button {
@@ -61,10 +63,8 @@ struct SnowlineSearchBar: View {
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .shadow(
-            color: .black.opacity(isFocused ? 0.16 : 0.07),
-            radius: isFocused ? 14 : 8,
-            y: 8
-        )
+        .shadow(color: .black.opacity(isFocused ? 0.22 : 0.10),
+                radius: isFocused ? 18 : 12,
+                y: 10)
     }
 }

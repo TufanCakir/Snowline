@@ -11,37 +11,39 @@ import SwiftUI
 struct SnowlineApp: App {
 
     // MARK: - Global State
-    @StateObject private var themeManager: ThemeManager
-    @StateObject private var internet: InternetMonitor
+
+    @StateObject private var themeManager = ThemeManager()
+    @StateObject private var internetMonitor = InternetMonitor()
+    @StateObject private var favoritesStore = FavoritesStore()
 
     @AppStorage("hasSeenOnboarding")
     private var hasSeenOnboarding = false
 
-    // MARK: - Init
-    init() {
-        _themeManager = StateObject(wrappedValue: ThemeManager())
-        _internet = StateObject(wrappedValue: InternetMonitor())
-    }
-
     // MARK: - Scene
+
     var body: some Scene {
         WindowGroup {
-            Group {
-                if hasSeenOnboarding {
-                    RootView()
-                } else {
-                    OnboardingView {
-                        hasSeenOnboarding = true
-                    }
-                }
-            }
-            // ✅ ENV FÜR ALLE
-            .environmentObject(themeManager)
-            .environmentObject(internet)
+            RootRouter()
+                .environmentObject(themeManager)
+                .environmentObject(internetMonitor)
+                .environmentObject(favoritesStore)
+                .preferredColorScheme(themeManager.colorScheme)
+                .tint(themeManager.accentColor)
+        }
+    }
+}
 
-            // ✅ THEME GLOBAL
-            .preferredColorScheme(themeManager.colorScheme)
-            .tint(themeManager.accentColor)
+struct RootRouter: View {
+
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
+
+    var body: some View {
+        if hasSeenOnboarding {
+            RootView()
+        } else {
+            OnboardingView {
+                hasSeenOnboarding = true
+            }
         }
     }
 }

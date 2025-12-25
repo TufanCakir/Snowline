@@ -9,21 +9,30 @@ import SwiftUI
 import WebKit
 
 struct WebView: UIViewRepresentable {
-
-    let url: URL
-    let isPrivate: Bool
+    @ObservedObject var tab: SnowlineTab
 
     func makeUIView(context: Context) -> WKWebView {
-        let config = WKWebViewConfiguration()
-
-        if isPrivate {
-            config.websiteDataStore = .nonPersistent()  // 🔒 DAS ist Private Mode
-        }
-
-        let webView = WKWebView(frame: .zero, configuration: config)
-        webView.load(URLRequest(url: url))
-        return webView
+        tab.webView.navigationDelegate = context.coordinator
+        return tab.webView
     }
 
-    func updateUIView(_ uiView: WKWebView, context: Context) {}
+    func updateUIView(_ webView: WKWebView, context: Context) {}
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(tab: tab)
+    }
+}
+
+// MARK: Coordinator
+final class Coordinator: NSObject, WKNavigationDelegate {
+
+    let tab: SnowlineTab
+    init(tab: SnowlineTab) { self.tab = tab }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        tab.title = webView.title ?? "Website"
+        tab.url = webView.url
+        tab.canGoBack = webView.canGoBack
+        tab.canGoForward = webView.canGoForward
+    }
 }
