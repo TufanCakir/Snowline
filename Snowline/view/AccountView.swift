@@ -11,26 +11,27 @@ struct AccountView: View {
 
     @EnvironmentObject var theme: ThemeManager
 
-    private let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
-    private let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
+    private let version =
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        ?? "1.0"
+    private let build =
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
 
     var body: some View {
         NavigationStack {
             List {
-
+                // App Header
                 Section {
-                    HStack {
-                        Image(systemName: "globe")
-                            .font(.largeTitle)
-                        VStack(alignment: .leading) {
-                            Text("Snowline")
-                                .font(.headline)
-                            Text("Version \(version) (\(build))")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
+                    VStack(spacing: 12) {
+                        Image(systemName: "snowflake")
+                            .font(.system(size: 44))
+                            .foregroundStyle(.blue)
+
+                        Text("Snowline")
+                            .font(.title2.weight(.semibold))
                     }
-                    .padding(.vertical, 4)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
                 }
 
                 Section("Appearance") {
@@ -45,18 +46,18 @@ struct AccountView: View {
                     }
                 }
 
-                Section("Legal") {
-                    Link("Privacy Policy", destination: URL(string: "https://snowline.app/privacy")!)
-                    Link("Terms of Use", destination: URL(string: "https://snowline.app/terms")!)
-                }
-
                 Section("About") {
-                    Text("Snowline is a fast, private and clean web browser built for modern iOS.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                    NavigationLink("Info") {
+                        InfoView()
+                    }
+
+                    HStack {
+                        Text("Version")
+                        Spacer()
+                        Text("\(version) (\(build))")
+                    }
                 }
             }
-            .navigationTitle("Account")
         }
     }
 }
@@ -64,5 +65,5 @@ struct AccountView: View {
 #Preview {
     AccountView()
         .environmentObject(ThemeManager())
+        .preferredColorScheme(ThemeManager().colorScheme)
 }
-
