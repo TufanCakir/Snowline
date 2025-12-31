@@ -48,21 +48,23 @@ struct BottomBar: View {
                     dockButton("gear", "Settings") {}
                 }
             } label: {
-                Image(systemName: "ellipsis.circle")
-                    .font(.system(size: 18, weight: .semibold))
-                    .frame(width: 36, height: 36)
+                Circle()
+                    .fill(.ultraThinMaterial)
+                    .frame(width: 46, height: 46)
+                    .overlay(
+                        Image(systemName: "ellipsis")
+                            .font(.system(size: 20, weight: .bold))
+                    )
             }
-            .padding(14)
-            .background(.ultraThinMaterial, in: Capsule())
-            .shadow(radius: 18, y: 8)
-            .padding(.bottom, 22)
-            .sheet(isPresented: $showHistory) { HistoryView() }
-            .sheet(isPresented: $showFavorites) { FavoritesView() }
-            .sheet(isPresented: $showImageSearch) {
-                NavigationStack { ImageSearchView() }
-            }
-            .sheet(isPresented: $showSettings) { AccountView() }
         }
+
+        // Sheets
+        .sheet(isPresented: $showHistory) { HistoryView() }
+        .sheet(isPresented: $showFavorites) { FavoritesView() }
+        .sheet(isPresented: $showImageSearch) {
+            NavigationStack { ImageSearchView() }
+        }
+        .sheet(isPresented: $showSettings) { AccountView() }
     }
     private func dockButton(
         _ icon: String,

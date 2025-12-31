@@ -11,76 +11,222 @@ struct HomeView: View {
 
     @State private var query = ""
     @State private var results: [Result] = []
+
     @State private var cache: [String: [Result]] = [:]
     @State private var lastQuery = ""
-    @State private var showImageSearch = false
+
+    @State private var debounceTask: Task<Void, Never>?
+    @State private var pending = false
+
+    // Damit alte Tasks nicht später “reinfunken”
+    @State private var searchToken = UUID()
+    @State private var mode: SearchMode = .all
+    @State private var selectedCode: String? = nil
+
+    private var currentTimeString: String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter.string(from: Date())
+    }
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-
+            ZStack(alignment: .bottom) {
+                // Main scrollable content
+                ScrollView {
                     VStack(spacing: 16) {
-                        ForEach(results) { result in
-                            ResultCard(result: result)
-                        }
-                    }
+                        SearchBar(text: $query, onSubmit: performSearch)
 
-                    HStack {
-                        ActionChip(icon: "sparkles", title: "KI-Modus")
-                        ActionChip(icon: "music.note", title: "Musik")
-                        ActionChip(icon: "photo", title: "Bilder") {
-                            showImageSearch = true
+                        // Results list
+                        VStack(spacing: 16) {
+                            ForEach(results, id: \.url) { result in
+                                ResultCard(result: result)
+                                    .transition(
+                                        .opacity.combined(
+                                            with: .move(edge: .top)
+                                        )
+                                    )
+                            }
                         }
-                    }
 
+                        // Quick actions
+                        Picker("Mode", selection: $mode) {
+                            chip(.all, "sparkles").tag(SearchMode.all)
+
+                            chip(.ai, "brain").tag(SearchMode.ai)
+                            chip(.music, "music.note").tag(SearchMode.music)
+                            chip(.images, "photo").tag(SearchMode.images)
+                            chip(.maps, "map").tag(SearchMode.maps)
+                        }
+                        .pickerStyle(.segmented)
+
+                        // Cards row and clock
+                        HStack(spacing: 30) {
+                            Card(title: "Hameln", value: "0°", icon: "moon")
+                            Card(
+                                title: "Sunrise",
+                                value: "8:32",
+                                icon: "sunrise"
+                            )
+                        }
+                        DateView()
+
+                    }
                     HStack {
-                        Card(title: "Hameln", value: "0°", icon: "moon")
-                        Card(title: "Sunrise", value: "8:32", icon: "sunrise")
+                        NavigationLink {
+                            MapView()
+                        } label: {
+                            Text("Map").font(.title)
+                        }
+                        .padding()
+                        .frame(width: 200)
+                        .background(
+                            .ultraThinMaterial,
+                            in: RoundedRectangle(cornerRadius: 50)
+                        )
+                        NavigationLink {
+                            ImageSearchView()
+                        } label: {
+                            Text("Gallery").font(.title)
+                        }
+                        .padding()
+                        .frame(width: 200)
+                        .background(
+                            .ultraThinMaterial,
+                            in: RoundedRectangle(cornerRadius: 50)
+                        )
                     }
                 }
-                .padding(.bottom, 120)
+
+                VStack(spacing: 8) {
+                    FloatingAddressBar(query: $query)
+                }
+
+                // Bottom bar anchored at bottom
+                BottomBar()
+                    .frame(maxWidth: .infinity, alignment: .trailing)
             }
         }
-        .navigationTitle("Snowline")
-        .searchable(
-            text: $query,
-            placement: .navigationBarDrawer(displayMode: .always),
-            prompt: "Search the web"
-        )
-        .onChange(of: query) { runSearch($1) }
-        .sheet(isPresented: $showImageSearch) { ImageSearchView() }
+        .overlay(alignment: .top) {
+            if pending {
+                ProgressView()
+                    .scaleEffect(0.7)
+                    .opacity(0.4)
+                    .padding(.top, 6)
+            }
+        }
     }
 
-    // MARK: Native Engine
+    private func chip(_ modeValue: SearchMode, _ icon: String) -> some View {
+        ActionChip(
+            icon: icon,
+            title: modeValue.rawValue,
+            isSelected: mode == modeValue
+        ) {
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
+                mode = modeValue
+            }
+        }
+    }
 
-    private func runSearch(_ text: String) {
-        let clean =
-            text
-            .lowercased()
-            .components(separatedBy: CharacterSet.alphanumerics.inverted)
-            .joined(separator: " ")
-            .trimmingCharacters(in: .whitespaces)
+    // MARK: - Search
+    @MainActor
+    private func runSearch(_ clean: String, token: UUID) async {
+        if clean == lastQuery {
+            pending = false
+            return
+        }
 
+        if let cached = cache[clean] {
+            lastQuery = clean
+            pending = false
+            withAnimation(.easeOut(duration: 0.25)) {
+                results = cached
+            }
+            prefetchPrediction(from: clean)  // optional
+            return
+        }
+
+        let foundRaw = await SearchCore.shared.searchResults(for: clean)
+
+        // Dublikate raus
+        let found = dedupe(foundRaw)
+
+        // Wenn sich der Token geändert hat, Results NICHT setzen
+        guard token == searchToken else { return }
+
+        cache[clean] = found
+        lastQuery = clean
+        pending = false
+
+        withAnimation(.easeOut(duration: 0.25)) {
+            results = found
+        }
+
+        prefetchPrediction(from: clean)
+    }
+
+    private func performSearch() {
+        let clean = normalize(query)
         guard clean.count > 1 else {
+            pending = false
             results = []
             lastQuery = ""
             return
         }
 
-        if clean == lastQuery { return }
+        let token = UUID()
+        searchToken = token
+        pending = true
 
-        if let cached = cache[clean] {
-            results = cached
-            lastQuery = clean
-            return
+        Task { @MainActor in
+            await runSearch(clean, token: token)
+        }
+    }
+
+    // MARK: - Helpers
+    private func normalize(_ text: String) -> String {
+        text
+            .lowercased()
+            .components(separatedBy: CharacterSet.alphanumerics.inverted)
+            .joined(separator: " ")
+            .trimmingCharacters(in: .whitespaces)
+    }
+
+    private func dedupe(_ input: [Result]) -> [Result] {
+        var seen = Set<String>()
+        var out: [Result] = []
+        out.reserveCapacity(input.count)
+
+        for r in input {
+            var comps = URLComponents(
+                url: r.url,
+                resolvingAgainstBaseURL: false
+            )
+            comps?.query = nil
+            comps?.fragment = nil
+
+            let normalized = (comps?.url ?? r.url).absoluteString.lowercased()
+
+            if seen.insert(normalized).inserted {
+                out.append(r)
+            }
         }
 
-        Task {
-            let found = await SearchCore.shared.searchResults(for: clean)
-            cache[clean] = found
-            lastQuery = clean
-            results = found
+        return out
+    }
+
+    private func prefetchPrediction(from clean: String) {
+        // “Google Magic”: minimaler Prefetch (optional)
+        Task.detached {
+            let words = clean.split(separator: " ").map(String.init)
+            guard let last = words.last, last.count >= 3 else { return }
+
+            let predicted =
+                (words.dropLast().joined(separator: " ") + " " + last.prefix(3))
+                .trimmingCharacters(in: .whitespaces)
+
+            _ = await SearchCore.shared.searchResults(for: predicted)
         }
     }
 }

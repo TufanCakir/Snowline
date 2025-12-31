@@ -49,7 +49,7 @@ struct HistoryCard: View {
                     .foregroundStyle(.secondary)
             }
         }
-        .padding(10)
+        .padding()
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18))
     }
 }

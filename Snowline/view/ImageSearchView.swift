@@ -26,7 +26,6 @@ struct ImageSearchView: View {
                         .scaledToFit()
                         .frame(maxHeight: 260)
                         .clipShape(RoundedRectangle(cornerRadius: 24))
-                        .shadow(radius: 12)
                 } else {
                     RoundedRectangle(cornerRadius: 24)
                         .fill(.ultraThinMaterial)

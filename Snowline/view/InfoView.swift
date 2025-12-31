@@ -48,7 +48,7 @@ struct InfoView: View {
                     .multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
+            .padding()
         }
     }
 
