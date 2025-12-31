@@ -1,0 +1,52 @@
+{
+    "title": "Slayken",
+    "subtitle":
+        "Eine intelligente Suchmaschine für Klarheit, Geschwindigkeit und Kontrolle",
+    "sections": [
+        {
+            "title": "Was ist Slayken?",
+            "text":
+                "Slayken ist eine moderne Suchmaschine, die Webseiten eigenständig indexiert, analysiert und durchsucht. Sie ist kein klassischer Browser, sondern ein eigenständiges Suchsystem mit eigener Engine und Datenstruktur."
+        },
+        {
+            "title": "Eigene Index-Engine",
+            "text":
+                "Slayken crawlt Webseiten, erstellt einen eigenen Suchindex und ermöglicht blitzschnelle, präzise Suchanfragen – unabhängig von externen Suchdiensten."
+        },
+        {
+            "title": "Tabs & Sitzungen",
+            "text":
+                "Slayken bietet ein intelligentes Tab-System. Du kannst neue Tabs erstellen, zwischen ihnen wechseln und alle geöffneten Tabs in einer Übersicht sehen. Jede Seite wird automatisch als Screenshot gespeichert, sodass du immer erkennst, welche Inhalte offen sind."
+        },
+        {
+            "title": "Verlauf & Favoriten",
+            "text":
+                "Alle besuchten Seiten werden in deinem Verlauf gespeichert. Wichtige Inhalte lassen sich als Favoriten markieren, um sie jederzeit schnell wiederzufinden."
+        },
+        {
+            "title": "Globale Suche",
+            "text":
+                "Die globale Suche durchsucht nicht nur das Web, sondern auch deine Tabs, deinen Verlauf und deine Favoriten – alles in einem einzigen Suchfeld."
+        },
+        {
+            "title": "Zusatzfunktionen",
+            "text":
+                "Slayken bietet integrierte Wetteranzeigen, eine Uhranzeige sowie intelligente Such-Tools für den Alltag."
+        },
+        {
+            "title": "Bildbasierte Suche",
+            "text":
+                "Du kannst Fotos aus deiner Galerie auswählen, um ähnliche Bilder und passende Webinhalte automatisch finden zu lassen."
+        },
+        {
+            "title": "Datenschutz & Kontrolle",
+            "text":
+                "Deine Daten bleiben unter deiner Kontrolle. Slayken arbeitet transparent, respektiert deine Privatsphäre und speichert nur, was für deine Suchfunktionen notwendig ist."
+        },
+        {
+            "title": "Über Slayken",
+            "text":
+                "Slayken ist eine moderne Suchmaschine, die Webseiten eigenständig indexiert, analysiert und durchsucht.\n\nSlayken ist kein klassischer Browser, sondern ein eigenständiges Suchsystem mit eigener Crawling-, Index- und Daten-Engine.\n\nMit Slayken kannst du:\n• Tabs erstellen und verwalten\n• zwischen aktiven Sitzungen wechseln\n• alle geöffneten Seiten mit automatischen Screenshots anzeigen\n• Verlauf und Favoriten speichern\n• die globale Suche über Web, Tabs, Verlauf und Favoriten nutzen\n• Wetter- und Uhr-Widgets anzeigen\n• bildbasierte Suchen aus deiner Fotomediathek durchführen\n\nDeine Daten bleiben unter deiner Kontrolle. Slayken arbeitet transparent und datenschutzorientiert."
+        }
+    ]
+}

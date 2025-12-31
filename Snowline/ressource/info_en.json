@@ -1,0 +1,51 @@
+{
+    "title": "Slayken",
+    "subtitle": "An intelligent search engine for clarity, speed, and control",
+    "sections": [
+        {
+            "title": "What is Slayken?",
+            "text":
+                "Slayken is a modern search engine that independently indexes, analyzes, and searches websites. It is not a traditional browser, but a standalone search system with its own engine and data structure."
+        },
+        {
+            "title": "Own Index Engine",
+            "text":
+                "Slayken crawls websites, builds its own search index, and delivers lightning-fast, precise search results — independent of external search services."
+        },
+        {
+            "title": "Tabs & Sessions",
+            "text":
+                "Slayken features an intelligent tab system. You can create new tabs, switch between them, and view all open tabs in a dedicated overview. Each page is automatically saved as a screenshot, making it easy to recognize your active content."
+        },
+        {
+            "title": "History & Favorites",
+            "text":
+                "All visited pages are stored in your history. Important content can be marked as favorites, allowing quick access at any time."
+        },
+        {
+            "title": "Global Search",
+            "text":
+                "Global search scans not only the web, but also your tabs, history, and favorites — all within a single search field."
+        },
+        {
+            "title": "Additional Features",
+            "text":
+                "Slayken includes integrated weather displays, a clock view, and intelligent everyday search tools."
+        },
+        {
+            "title": "Image-Based Search",
+            "text":
+                "You can select photos from your gallery to automatically find similar images and related web content."
+        },
+        {
+            "title": "Privacy & Control",
+            "text":
+                "Your data remains under your control. Slayken works transparently, respects your privacy, and stores only what is necessary for your search features."
+        },
+        {
+            "title": "About Slayken",
+            "text":
+                "Slayken is a modern search engine that independently indexes, analyzes, and searches websites.\n\nIt is not a traditional browser, but a standalone search system with its own crawling, indexing, and data engine.\n\nSlayken allows you to:\n• create and manage tabs\n• switch between active sessions\n• view all open pages with automatic screenshots\n• store history and favorites\n• use global search across web, tabs, history, and favorites\n• view weather and clock widgets\n• perform image-based searches from your photo library\n\nYour data remains under your control. Slayken works transparently and privacy-first."
+        }
+    ]
+}

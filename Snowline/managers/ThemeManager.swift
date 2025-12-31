@@ -5,34 +5,55 @@
 //  Created by Tufan Cakir on 27.12.25.
 //
 
+internal import Combine
 import Foundation
-import Combine
 import SwiftUI
 
 @MainActor
 final class ThemeManager: ObservableObject {
 
-    enum Mode: String, CaseIterable {
-        case system, light, dark
+    static let shared = ThemeManager()
+
+    struct Theme {
+        let background: UIColor
+        let card: UIColor
+        let accent: UIColor
+        let textPrimary: UIColor
+        let textSecondary: UIColor
+        let separator: UIColor
     }
 
-    @AppStorage("snowline_theme") var stored: Mode = .system
-    @Published var current: Mode = .system
+    @Published var theme = Theme(
+        background: .systemBackground,
+        card: .secondarySystemBackground,
+        accent: .systemBlue,
+        textPrimary: .label,
+        textSecondary: .secondaryLabel,
+        separator: .separator
+    )
 
-    init() {
-        current = stored
+    func load(json: ThemeJSON) {
+        theme = json.toTheme()
     }
+}
 
-    func apply(_ mode: Mode) {
-        stored = mode
-        current = mode
-    }
+struct ThemeJSON: Codable {
+    let background: String
+    let card: String
+    let accent: String
+    let textPrimary: String
+    let textSecondary: String
+    let separator: String
 
-    var colorScheme: ColorScheme? {
-        switch current {
-        case .system: return nil
-        case .light: return .light
-        case .dark: return .dark
-        }
+    func toTheme() -> ThemeManager.Theme {
+        .init(
+            background: UIColor(named: background) ?? UIColor.systemBackground,
+            card: UIColor(named: card) ?? UIColor.secondarySystemBackground,
+            accent: UIColor(named: accent) ?? UIColor.systemBlue,
+            textPrimary: UIColor(named: textPrimary) ?? UIColor.label,
+            textSecondary: UIColor(named: textSecondary)
+                ?? UIColor.secondaryLabel,
+            separator: UIColor(named: separator) ?? UIColor.separator
+        )
     }
 }

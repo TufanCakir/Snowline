@@ -1,0 +1,8 @@
+{
+    "background": "systemBackground",
+    "card": "secondarySystemBackground",
+    "accent": "systemBlue",
+    "textPrimary": "label",
+    "textSecondary": "secondaryLabel",
+    "separator": "separator"
+}

@@ -1,10 +1,3 @@
-//
-//  SnowlineApp.swift
-//  Snowline
-//
-//  Created by Tufan Cakir on 22.12.25.
-//
-
 import SwiftUI
 
 @main
@@ -12,11 +5,25 @@ struct SnowlineApp: App {
 
     @StateObject private var theme = ThemeManager()
 
+    @AppStorage("hasSeenOnboarding")
+    private var hasSeenOnboarding = false
+
+    // MARK: - Scene
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(theme)
-                .preferredColorScheme(theme.colorScheme)
+            Group {
+                if hasSeenOnboarding {
+                    RootView()
+                } else {
+                    OnboardingView {
+                        hasSeenOnboarding = true
+                    }
+                }
+            }
+            .environmentObject(theme)
+            .onAppear {
+                Discovery.shared.start()
+            }
         }
     }
 }
